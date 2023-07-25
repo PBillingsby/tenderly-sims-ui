@@ -48,9 +48,6 @@ export default function Home() {
     1: <First {...firstProps} />,
     2: <Second {...secondProps} />,
     // Add more components as needed
-    // For example:
-    // 3: <Third />,
-    // 4: <Fourth />,
     // ...
   };
 
@@ -58,9 +55,7 @@ export default function Home() {
 
   return (
     <main className="font-mono p-4">
-      <div className="text-center">
-        <h1 className="text-2xl">Tenderly Simulations</h1>
-      </div>
+      <h1 className="text-2xl">Tenderly Simulations UI</h1>
       <div className={`flex flex-col items-center justify-between p-24 w-full text-black`}>
         {!loading ? (renderedComponent[currentIndex])
           :

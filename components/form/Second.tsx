@@ -71,34 +71,44 @@ export const Second = ({ setLoading, options, abi }: SecondStepProps) => {
 
   return (
     <div>
-      <div className="p-4 border text-white space-y-4 min-w-full">
-        <p>Function calls</p>
+      <div className="functions p-4 border border-red-400 text-white space-y-4 min-w-full">
+        <p>Contract Functions</p>
         {Object.keys(options) &&
           <form>
             <select className='flex flex-col text-black' onChange={(e) => setSelectedFunction(e.target.value)}>
               <option value="value" selected>-- select function --</option>
 
               {Object.entries(options).map(([key, value]) => (
-                <option key={key} className="w-full border-2 text-black border-gray-300 rounded-md" value={value?.name}>{value?.name} - {value?.inputs.length} params</option>
+                <option key={key} className="w-full border-2 text-black border-gray-300 rounded-md" value={value?.name}>{value?.name}</option>
               ))}
             </select>
-            <div className="flex justify-between pt-10">
+            <div className="flex justify-between">
               <div>
-                {selectedFunction && <Button type="button" onClick={addFunction}><Plus /></Button>}
+                {selectedFunction &&
+                  <div className="flex items-center">
+                    <Button type="button" onClick={addFunction}><Plus /></Button>
+                    <p className="py-8 text-xs">Add Function</p>
+                  </div>
+                }
               </div>
-              <Button type="button" onClick={sendTx}><ArrowRight /></Button>
+              <div className="flex items-center">
+                <Button type="button" onClick={sendTx}><ArrowRight /></Button>
+                <p className="py-8 text-xs">Simulate Tx</p>
+              </div>
             </div>
           </form>
         }
         {addedFunctions.length > 0 && (
-          <div className="flex flex-row gap-12 justify-between">
-            <div className="p-4">
+          <div className="params flex flex-row gap-12 justify-between border border-red-400">
+            <div className="p-4 space-y-4 text-white">
               <p>Transaction Parameters</p>
               {Object.keys(currentFunction).length > 0 &&
                 <div className="flex">
-                  <div className="">
-                    <p>{currentFunction.name}</p>
-                    <p>{currentFunction.inputs.length} params</p>
+                  <div className="p-4 space-y-4 text-white">
+                    <div className="py-8">
+                      <p>Function: {currentFunction.name}</p>
+                      <p>{currentFunction.inputs.length === 1 ? "Param: " : "Params: "} {currentFunction.inputs.length}</p>
+                    </div>
                     {currentFunction.inputs.length > 0 && currentFunction.inputs.map((input: ParamType) => {
                       debugger
                       return (
@@ -125,12 +135,12 @@ export const Second = ({ setLoading, options, abi }: SecondStepProps) => {
 
                     <div className="flex flex-col">
                       <label htmlFor="gas">Gas:</label>
-                      <input onChange={handleInputChange} type="number" step={0.001} id="gas" name="gas" className="w-full border-2 text-black border-gray-300 rounded-md" />
+                      <input onChange={handleInputChange} type="number" step={0.001} placeholder="0" id="gas" name="gas" className="w-full border-2 text-black border-gray-300 rounded-md" />
                     </div>
 
                     <div className="flex flex-col">
                       <label htmlFor="gas_price">Gas Price:</label>
-                      <input onChange={handleInputChange} type="string" id="gas_price" name="gas_price" className="w-full border-2 text-black border-gray-300 rounded-md" />
+                      <input onChange={handleInputChange} type="string" id="gas_price" placeholder="0" name="gas_price" className="w-full border-2 text-black border-gray-300 rounded-md" />
                     </div>
 
                     <div className="flex flex-col">
@@ -144,9 +154,9 @@ export const Second = ({ setLoading, options, abi }: SecondStepProps) => {
                       />
                     </div>
 
-                    <Button type="submit">
+                    <button type="submit" className="border border-red-400">
                       Add
-                    </Button>
+                    </button>
                   </form>
                 </div>
               }
@@ -154,8 +164,7 @@ export const Second = ({ setLoading, options, abi }: SecondStepProps) => {
           </div>
         )}
         <p>Added Functions</p>
-        {payloads.length > 0 && payloads.map((func: TransactionParameters) => {
-          console.log("----", func)
+        {addedFunctions.length > 0 && addedFunctions.map((func: TransactionParameters) => {
           return (
             <div className="flex flex-row justify-between">
               <p>{currentFunction.name}</p>
