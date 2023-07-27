@@ -58,9 +58,12 @@ export const First = ({ setLoading, formatAbi }: FirstStepProps) => {
         />
       </div>
 
-      <Button type="submit">
-        <ArrowRight />
-      </Button>
+      <div className="flex justify-between">
+        <div></div>
+        <Button type="submit">
+          <ArrowRight />
+        </Button>
+      </div>
     </form>
   )
 }

@@ -40,12 +40,12 @@ export const Second = ({ setLoading, options, abi }: SecondStepProps) => {
   }
 
   const sendTx = async () => {
-    console.log(payloads)
     try {
-      const transaction = await tenderlyInstance.simulator.simulateBundle({
-        transactions: [payloads],
+      const transaction = await tenderlyInstance.simulator.simulateTransaction({
+        transaction: payloads[0],
         blockNumber: 44134585,
       })
+      debugger
     } catch (error) {
       console.log(error)
     }
@@ -74,7 +74,7 @@ export const Second = ({ setLoading, options, abi }: SecondStepProps) => {
       <div className="functions p-4 border border-red-400 text-white space-y-4 min-w-full">
         <p>Contract Functions</p>
         {Object.keys(options) &&
-          <form>
+          <form className="flex pt-10">
             <select className='flex flex-col text-black' onChange={(e) => setSelectedFunction(e.target.value)}>
               <option value="value" selected>-- select function --</option>
 
@@ -83,18 +83,12 @@ export const Second = ({ setLoading, options, abi }: SecondStepProps) => {
               ))}
             </select>
             <div className="flex justify-between">
-              <div>
-                {selectedFunction &&
-                  <div className="flex items-center">
-                    <Button type="button" onClick={addFunction}><Plus /></Button>
-                    <p className="py-8 text-xs">Add Function</p>
-                  </div>
-                }
-              </div>
-              <div className="flex items-center">
-                <Button type="button" onClick={sendTx}><ArrowRight /></Button>
-                <p className="py-8 text-xs">Simulate Tx</p>
-              </div>
+              {selectedFunction &&
+                <div className="flex items-center">
+                  <Button type="button" onClick={addFunction}><Plus /></Button>
+                  <p className="py-8 text-xs">Select Function</p>
+                </div>
+              }
             </div>
           </form>
         }
@@ -154,8 +148,8 @@ export const Second = ({ setLoading, options, abi }: SecondStepProps) => {
                       />
                     </div>
 
-                    <button type="submit" className="border border-red-400">
-                      Add
+                    <button type="submit" className="border">
+                      Add Function
                     </button>
                   </form>
                 </div>
@@ -172,6 +166,10 @@ export const Second = ({ setLoading, options, abi }: SecondStepProps) => {
           )
         })
         }
+      </div>
+      <div className="flex items-center justify-between border border-white">
+        <p className="py-8 text-xs text-white">Simulate Tx</p>
+        <Button type="button" onClick={sendTx}><ArrowRight /></Button>
       </div>
     </div>
   )
